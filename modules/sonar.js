@@ -8,18 +8,6 @@ function Sonar(pins) {
         soundSpeed = 340,
         maxResponseTime = (1000 * maxDistance * 2) / soundSpeed;
 
-    setWatch(function(e) {
-        startTime = e.time;
-    }, pins.inputPin, {
-        edge: 'rising'
-    });
-
-    setWatch(function(e) {
-        stopTime = e.time;
-    }, pins.inputPin, {
-        edge: 'falling'
-    });
-
     function convertUnits(s, units) {
         if (units === undefined) {
           return s;
@@ -40,17 +28,29 @@ function Sonar(pins) {
         }
     }
 
-    this.ping = function(callback)  {    
+    this.ping = function(callback)  {
+
+        setWatch(function(e) {
+            startTime = e.time;
+        }, pins.inputPin, {
+            edge: 'rising'
+        });
+
+        setWatch(function(e) {
+            stopTime = e.time;
+        }, pins.inputPin, {
+            edge: 'falling'
+        });
+
         digitalPulse(pins.outputPin, 0, 5); // 5 sec отдаем 0
         digitalPulse(pins.outputPin, 0, 0); // ждем
         digitalPulse(pins.outputPin, 1, 20); // 10 sec отдаем 1
-        digitalPulse(pins.outputPin, 0, 20); // ждем      
-        
+        digitalPulse(pins.outputPin, 0, 20); // ждем
+
         setTimeout(function() {
-          callback && callback(convertUnits(stopTime - startTime, defaultUnits));
+            callback && callback(convertUnits(stopTime - startTime, defaultUnits));
         }, maxResponseTime);
     }
-
 }
 
 exports.connect = function(pins) {

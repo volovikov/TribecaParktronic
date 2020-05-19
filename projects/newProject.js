@@ -15,5 +15,4 @@ leftSonar.ping(function(dest) {
 });
 rightSonar.ping(function(dest) {
   console.log('Sonar Right: ' + dest);
-  display.distance(dest.toFixed(2));
 });
