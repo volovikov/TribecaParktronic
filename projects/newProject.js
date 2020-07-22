@@ -3,6 +3,7 @@ var leftSonar = require('sonar').connect({
     inputPin: P1
 });
 
+
 var rightSonar = require('sonar').connect({
     outputPin: P9,
     inputPin: P8
